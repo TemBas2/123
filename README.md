@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Task11v
+namespace WindowsForm4Api
 {
     public class Form1 : Form
     {
@@ -24,7 +24,6 @@ namespace Task11v
             this.Text = "Задача 11в - Вычисление a и b";
             this.ClientSize = new Size(350, 250);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new Font("Microsoft Sans Serif", 10F);
 
             // Поля ввода
             Label labelX = new Label();
@@ -34,7 +33,7 @@ namespace Task11v
 
             textBoxX = new TextBox();
             textBoxX.Location = new Point(50, 17);
-            textBoxX.Size = new Size(80, 23);
+            textBoxX.Size = new Size(80, 20);
             textBoxX.Text = "1";
 
             Label labelY = new Label();
@@ -44,7 +43,7 @@ namespace Task11v
 
             textBoxY = new TextBox();
             textBoxY.Location = new Point(180, 17);
-            textBoxY.Size = new Size(80, 23);
+            textBoxY.Size = new Size(80, 20);
             textBoxY.Text = "2";
 
             Label labelZ = new Label();
@@ -54,7 +53,7 @@ namespace Task11v
 
             textBoxZ = new TextBox();
             textBoxZ.Location = new Point(310, 17);
-            textBoxZ.Size = new Size(80, 23);
+            textBoxZ.Size = new Size(80, 20);
             textBoxZ.Text = "3";
 
             // Кнопка вычисления
@@ -62,7 +61,7 @@ namespace Task11v
             buttonCalculate.Text = "Вычислить";
             buttonCalculate.Location = new Point(20, 60);
             buttonCalculate.Size = new Size(100, 30);
-            buttonCalculate.Click += new EventHandler(ButtonCalculate_Click);
+            buttonCalculate.Click += ButtonCalculate_Click;
 
             // Метки результатов
             labelResultA = new Label();
@@ -89,28 +88,27 @@ namespace Task11v
 
         private void ButtonCalculate_Click(object sender, EventArgs e)
         {
-            // Чтение введенных значений
             double x = double.Parse(textBoxX.Text);
             double y = double.Parse(textBoxY.Text);
             double z = double.Parse(textBoxZ.Text);
 
-            // Вычисление значения a
-            // a = (1 + y) * (x + y/(x² + 4)) / (e^(-x-2) + 1/(x² + 4))
+            // Вычисление a
             double denominatorA = Math.Exp(-x - 2) + 1.0 / (x * x + 4);
             double numeratorA = (1 + y) * (x + y / (x * x + 4));
             double a = numeratorA / denominatorA;
 
-            // Вычисление значения b
-            // b = (1 + cos(y-2)) / (x⁴/2 + sin²(z))
+            // Вычисление b
             double denominatorB = (x * x * x * x) / 2.0 + Math.Sin(z) * Math.Sin(z);
             double numeratorB = 1 + Math.Cos(y - 2);
             double b = numeratorB / denominatorB;
 
-            // Вывод результатов
-            labelResultA.Text = string.Format("a = {0:F6}", a);
-            labelResultB.Text = string.Format("b = {0:F6}", b);
+            labelResultA.Text = "a = " + a.ToString("F6");
+            labelResultB.Text = "b = " + b.ToString("F6");
         }
+    }
 
+    internal static class Program
+    {
         [STAThread]
         static void Main()
         {
