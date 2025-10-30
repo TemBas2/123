@@ -1,16 +1,3 @@
-
-                    ]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-        }
-    }
-}
-
-
-
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -105,11 +92,13 @@ namespace CalculationApp
                 double z = double.Parse(txtZ.Text);
 
                 // Вычисление a по формуле варианта "в"
+                // a = (1 + y) * (x + y / (x^2 + 4)) / (e^(-x-2) + 1 / (x^2 + 4))
                 double denominatorA = Math.Exp(-x - 2) + 1.0 / (x * x + 4);
                 double numeratorA = (1 + y) * (x + y / (x * x + 4));
                 double a = numeratorA / denominatorA;
 
                 // Вычисление b по формуле варианта "в"
+                // b = (1 + cos(y - 2)) / (x^4 / 2 + sin^2(z))
                 double denominatorB = (x * x * x * x) / 2.0 + Math.Sin(z) * Math.Sin(z);
                 double numeratorB = 1 + Math.Cos(y - 2);
                 double b = numeratorB / denominatorB;
