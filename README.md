@@ -1,8 +1,3 @@
-
-Hello world 123 test 456 + 789 continue 000.
-This is sample 111 text with 222 numbers + 333 and more.
-abc, def 444 ghi 555.
-
 using System;
 using System.IO;
 using System.Text;
@@ -11,74 +6,59 @@ class Program
 {
     static void Main()
     {
-        // Пробуем разные возможные расположения файла
-        string[] possiblePaths = {
-            @"\\10.5.6.2\студент\ИСП-32КО\Овсепян Исмаилов\input.txt", // Ваш сетевой путь
-            "input.txt",
-            @"..\..\..\input.txt", // Для структуры папок Visual Studio
-            Path.Combine(Environment.CurrentDirectory, "input.txt"),
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "input.txt")
-        };
+        string filePath = @"\\10.5.6.2\студент\ИСП-32КО\Овсепян Исмаилов\input.txt";
         
-        string text = "";
-        string usedPath = "";
-        
-        foreach (string path in possiblePaths)
+        try
         {
-            try
+            // Чтение файла
+            string text = File.ReadAllText(filePath, Encoding.UTF8);
+            
+            // Вывод исходного текста
+            Console.WriteLine("Исходный текст:");
+            Console.WriteLine(text);
+            Console.WriteLine();
+            
+            // Обработка текста
+            int firstPlusIndex = text.IndexOf('+');
+            if (firstPlusIndex != -1)
             {
-                if (File.Exists(path))
+                // Заменяем цифры перед первым '+' на '*'
+                char[] chars = text.ToCharArray();
+                for (int i = 0; i < firstPlusIndex; i++)
                 {
-                    text = File.ReadAllText(path, Encoding.UTF8);
-                    usedPath = Path.GetFullPath(path);
-                    break;
+                    if (char.IsDigit(chars[i]))
+                    {
+                        chars[i] = '*';
+                    }
                 }
+                text = new string(chars);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при доступе к {path}: {ex.Message}");
-                continue;
-            }
+            
+            // Вывод результата
+            Console.WriteLine("Результат:");
+            Console.WriteLine(text);
         }
-        
-        if (string.IsNullOrEmpty(text))
+        catch (FileNotFoundException)
         {
-            Console.WriteLine("Файл input.txt не найден!");
-            Console.WriteLine("Проверьте следующие расположения:");
-            foreach (string path in possiblePaths)
-            {
-                Console.WriteLine($"  {Path.GetFullPath(path)}");
-            }
-            Console.WriteLine("\nУбедитесь, что:");
-            Console.WriteLine("1. Сетевой ресурс доступен");
-            Console.WriteLine("2. У вас есть права доступа к папке");
-            Console.WriteLine("3. Файл input.txt существует в указанной папке");
-            return;
+            Console.WriteLine($"Файл не найден по пути: {filePath}");
+            Console.WriteLine("Убедитесь, что:");
+            Console.WriteLine("1. Файл input.txt существует в указанной папке");
+            Console.WriteLine("2. Сетевой ресурс доступен");
+            Console.WriteLine("3. У вас есть права доступа к файлу");
         }
-        
-        Console.WriteLine($"Файл найден: {usedPath}");
-        Console.WriteLine("\nИсходный текст:");
-        Console.WriteLine(text);
-        
-        // Обработка текста
-        int firstPlusIndex = text.IndexOf('+');
-        if (firstPlusIndex != -1)
+        catch (UnauthorizedAccessException)
         {
-            char[] chars = text.ToCharArray();
-            for (int i = 0; i < firstPlusIndex; i++)
-            {
-                if (char.IsDigit(chars[i]))
-                {
-                    chars[i] = '*';
-                }
-            }
-            text = new string(chars);
+            Console.WriteLine("Ошибка доступа: нет прав для чтения файла");
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Ошибка ввода-вывода: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Произошла ошибка: {ex.Message}");
         }
         
-        Console.WriteLine("\nРезультат:");
-        Console.WriteLine(text);
-        
-        // Пауза для просмотра результата
         Console.WriteLine("\nНажмите любую клавишу для выхода...");
         Console.ReadKey();
     }
