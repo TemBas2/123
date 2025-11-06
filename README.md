@@ -1,3 +1,5 @@
+\\10.5.6.2\студент\ИСП-32КО\Овсепян Исмаилов
+
 using System;
 using System.IO;
 using System.Text;
