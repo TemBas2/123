@@ -1,14 +1,32 @@
-Исходным является текстовый файл. В текст могут входить
-слова из латинских букв, цифры, знаки арифметических опера-
-ций, точка, запятая, пробел. Требуется считать текст из файла,
-вывести его на экран, после решения задачи вывести на экран
-результат. Группой букв будем называть такую совокупность
-последовательно расположенных букв, которой непосредственно
-не предшествует и за которой непосредственно не следует буква.
-Аналогично определяется группа цифр и группа знаков.
+using System;
+using System.IO;
+using System.Text;
 
-4. Если в тексте нет символа «+», то оставить текст без
-изменения, иначе каждую из цифр, предшествующую первому
-вхождению знака «+», заменить на «*»
-
-программа должна работать в консоли на языке c#
+class Program
+{
+    static void Main()
+    {
+        string inputPath = "input.txt";
+        string text = File.ReadAllText(inputPath, Encoding.UTF8);
+        
+        Console.WriteLine("Исходный текст:");
+        Console.WriteLine(text);
+        
+        int firstPlusIndex = text.IndexOf('+');
+        if (firstPlusIndex != -1)
+        {
+            char[] chars = text.ToCharArray();
+            for (int i = 0; i < firstPlusIndex; i++)
+            {
+                if (char.IsDigit(chars[i]))
+                {
+                    chars[i] = '*';
+                }
+            }
+            text = new string(chars);
+        }
+        
+        Console.WriteLine("\nРезультат:");
+        Console.WriteLine(text);
+    }
+}
